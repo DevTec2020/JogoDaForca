@@ -8,11 +8,12 @@ import { Tip } from "./components/Tip"
 import { Letter } from "./components/Letter"
 import { Input } from "./components/input"
 import { Button } from "./components/Button"
-import { LetterUsed } from "./components/LettersUsed"
+import { LetterUsed, LettersUsedProps } from "./components/LettersUsed"
 
 export default function App() {
-  const [attempts, setAttempt] = useState(0)
   const [letter, setLetter] = useState("")
+  const [attempts, setAttempt] = useState(0)
+  const [letterUsed, setLetterUsed] = useState<LettersUsedProps[]>([])
   const [challege, setChallenge] = useState<Challenge | null>(null)
 
   function handleRestartGame(){
@@ -56,7 +57,7 @@ export default function App() {
           <Button title="Confirmar" />
         </div>
         
-        <LetterUsed />
+        <LetterUsed data={letterUsed}/>
       </main>
     </div>
   )
