@@ -8,12 +8,12 @@ import { Tip } from "./components/Tip"
 import { Letter } from "./components/Letter"
 import { Input } from "./components/input"
 import { Button } from "./components/Button"
-import { LetterUsed, LettersUsedProps } from "./components/LettersUsed"
+import { LettersUsed, LettersUsedProps } from "./components/LettersUsed"
 
 export default function App() {
+  const [score, setScore] = useState(0)
   const [letter, setLetter] = useState("")
-  const [attempts, setAttempt] = useState(0)
-  const [letterUsed, setLetterUsed] = useState<LettersUsedProps[]>([])
+  const [lettersUsed, setLettersUsed] = useState<LettersUsedProps[]>([])
   const [challege, setChallenge] = useState<Challenge | null>(null)
 
   function handleRestartGame(){
@@ -25,8 +25,9 @@ export default function App() {
     const randomWord = WORDS[index]
     setChallenge(randomWord)
 
-    setAttempt(0)
+    setScore(0)
     setLetter("")
+    setLettersUsed([])
   }
 
   function handleConfirm() {
@@ -39,13 +40,21 @@ export default function App() {
     }
 
     const value = letter.toLocaleUpperCase()
-    const exists = letterUsed.find((used) => used.value.toLocaleUpperCase() === value)
+    const exists = lettersUsed.find((used) => used.value.toLocaleUpperCase() === value)
 
     if (exists) {
       return alert("Vacê já utilizou a letra "+ value)
     }
 
-    setLetterUsed((prevStage) => [...prevStage, {value, correct: false}])
+    const hits = challege.word
+      .toUpperCase()
+      .split("")
+      .filter((char) => char === value).length
+
+      const correct = hits > 0
+      const currentScore = score + hits
+
+    setLettersUsed((prevStage) => [...prevStage, {value, correct}])
     
     setLetter("")
   
@@ -62,14 +71,26 @@ export default function App() {
   return (
     <div className={styles.container}>
       <main>
-        <Header current={attempts} max={10} onRestart={handleRestartGame} />
+        <Header current={score} max={10} onRestart={handleRestartGame} />
         
-        <Tip tip="Uma das linguagens de programação mais utilizadas"/>
+        <Tip tip={challege.tip}/>
 
         <div className={styles.word}>
-          {challege.word.split("").map(() => (
-              <Letter value=""/>
-          ))}
+          {challege.word.split("").map((letter, index) => { 
+            const letterUsed = lettersUsed.find(
+              (used) => used.value.toUpperCase() === letter
+              .toUpperCase()
+            )
+
+
+            return (
+              <Letter 
+                key={index} 
+                value={letterUsed?.value} 
+                color={letterUsed?.correct ? "correct" : "default"} 
+              />
+            )  
+          })}
         </div>
 
         <h4>Palpite</h4>
@@ -85,7 +106,7 @@ export default function App() {
           <Button title="Confirmar" onClick={handleConfirm}/>
         </div>
         
-        <LetterUsed data={letterUsed}/>
+        <LettersUsed data={lettersUsed}/>
       </main>
     </div>
   )

@@ -11,7 +11,7 @@ type Props = {
     data: LettersUsedProps[]
 }
 
-export function LetterUsed({ data }: Props) {
+export function LettersUsed({ data }: Props) {
     return (
         <div className={style.lettersUsed}>
             <h5>Letras utilizadas</h5>
@@ -19,6 +19,7 @@ export function LetterUsed({ data }: Props) {
             <div>
                 {data.map(({value, correct}) => (
                     <Letter 
+                        key={value}
                         value={value}
                         size="small"
                         color={correct ? "correct" : "wrong"}
