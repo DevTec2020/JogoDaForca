@@ -32,6 +32,10 @@ export default function App() {
     startGame()
   }, [])
 
+  if(!challege){
+    return
+  }
+
   return (
     <div className={styles.container}>
       <main>
@@ -40,12 +44,9 @@ export default function App() {
         <Tip tip="Uma das linguagens de programação mais utilizadas"/>
 
         <div className={styles.word}>
-          <Letter value="L"/>
-          <Letter value="E"/>
-          <Letter value="T"/>
-          <Letter value="R"/>
-          <Letter value="A"/>
-          <Letter value="S"/>
+          {challege.word.split("").map(() => (
+              <Letter value=""/>
+          ))}
         </div>
 
         <h4>Palpite</h4>
