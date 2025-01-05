@@ -3,6 +3,7 @@ import styles from "./App.module.css"
 import { Header } from "./components/Header"
 import { Tip } from "./components/Tip"
 import { Letter } from "./components/Letter"
+import { Input } from "./components/input"
 
 export default function App() {
   function handleRestartGame(){
@@ -24,6 +25,8 @@ export default function App() {
           <Letter value="A"/>
           <Letter value="S"/>
         </div>
+
+        <Input />
       </main>
     </div>
   )
